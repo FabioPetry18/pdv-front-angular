@@ -1,0 +1,74 @@
+<main class=" flex flex-col h-screen w-screen  bg-base-200 box-border ">
+  <div class="flex items-center justify-center">
+    <ul class="steps  lg:steps-horizontal">
+      <li class="step step-neutral">Login </li>
+      <li class="step step-neutral">Selecionar tema</li>
+      <li class="step">Alterar senha</li>
+      <li class="step">Criar a primeira loja</li>
+    </ul>
+  </div>
+      <div class="flex items-center justify-center ">
+        <h1 class="text-base-content text-2xl">Preencha as informações abaixo</h1>
+      </div>
+      <div class="flex flex-wrap items-center gap-4 border border-base-300 bg-base-100 rounded p-4">
+  
+        <fieldset class="fieldset lg:w-96">
+          <legend class="fieldset-legend">Nome da Loja</legend>
+          <input type="text" class="input w-full" [(ngModel)]="loja.nome" required />
+        </fieldset>
+        <fieldset class="fieldset  lg:w-40">
+          <legend class="fieldset-legend">Telefone</legend>
+          <input type="text" class="input w-full" [(ngModel)]="loja.telefone" required />
+        </fieldset>
+      
+
+        <h3 class="text-lg font-semibold w-full">Endereço</h3>
+
+        <fieldset class="fieldset w-full md:w-1/4">
+          <legend class="fieldset-legend">CEP</legend>
+          <input type="text" class="input w-full" [(ngModel)]="loja.cep" required />
+        </fieldset>
+      
+        <fieldset class="fieldset w-full lg:w-80">
+          <legend class="fieldset-legend">Endereço</legend>
+          <input type="text" class="input w-full" [(ngModel)]="loja.endereco" required />
+        </fieldset>
+      
+        <fieldset class="fieldset w-full lg:flex-1">
+          <legend class="fieldset-legend">Bairro</legend>
+          <input type="text" class="input w-full" [(ngModel)]="loja.bairro" required />
+        </fieldset>
+        
+          <fieldset class="fieldset w-full md:flex-1">
+            <legend class="fieldset-legend">Cidade</legend>
+            <input type="text" class="input w-full" [(ngModel)]="loja.cidade" required />
+          </fieldset>
+      
+        <fieldset class="fieldset w-full lg:w-20">
+          <legend class="fieldset-legend">Número</legend>
+          <input type="text" class="input w-full" [(ngModel)]="loja.numero" required />
+        </fieldset>
+      
+        <fieldset class="fieldset w-full lg:w-20">
+          <legend class="fieldset-legend">UF</legend>
+          <input type="text" class="input w-full" [(ngModel)]="loja.uf" required />
+        </fieldset>
+
+      
+        <h3 class="text-lg font-semibold w-full">Horários de Funcionamento</h3>
+      
+        <fieldset class="fieldset w-full">
+          <legend class="fieldset-legend">Horários</legend>
+          <div *ngFor="let horario of loja.horarios; let i = index" class="flex flex-wrap gap-2">
+            <input type="time" class="input w-full md:flex-1" [(ngModel)]="loja.horarios[i].abertura" required />
+            <input type="time" class="input w-full md:flex-1" [(ngModel)]="loja.horarios[i].fechamento" required />
+            <input type="text" [disabled]="true" class="input w-full md:flex-1" [(ngModel)]="loja.horarios[i].diaSemana" required />
+          </div>
+        </fieldset>
+      
+        <div class="w-full flex justify-center md:justify-end mt-4">
+          <button class="btn btn-primary" (click)="salvarLoja()">Salvar</button>
+        </div>
+      
+      </div>
+</main>

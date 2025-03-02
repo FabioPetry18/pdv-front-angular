@@ -1,0 +1,9 @@
+<main class="flex flex-col min-h-screen box-border p-4 gap-3">
+  <div class="flex w-full items-center justify-center">
+    <app-search placeholder="Digite um título..." (search)="onSearchResult($event)"></app-search>
+  </div>
+   <app-dynamic-table [content]="produtos" [action]="true" [columns]="columns" [image]="true"></app-dynamic-table>
+   <div class="flex justify-center">
+     <app-paginator [isLastPage]="isLastPage" (pageChange)="onPageChange($event)"></app-paginator>
+   </div>
+</main>
