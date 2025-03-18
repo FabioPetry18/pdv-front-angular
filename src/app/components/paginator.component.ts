@@ -3,7 +3,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { first } from 'rxjs';
+import { debounceTime, first } from 'rxjs';
+import { CurrentStoreUtils } from '../utils/current-store';
 
 @Component({
   selector: 'app-paginator',
@@ -32,9 +33,16 @@ export class PaginationComponent implements OnInit {
   
     pages: number[] = Array.from({ length: 2 }, (_, i) => i + 1);
     currentPage: number = 1;
+    constructor(private store: CurrentStoreUtils) {}
 
     ngOnInit() {
-        this.pageChange.emit(this.currentPage); 
+      this.store.lojaSelecionada$
+      .pipe(debounceTime(100))
+      .subscribe((loja) => {
+        if (loja !== null) {
+          this.pageChange.emit(this.currentPage);
+        }
+      });
     }
   
     changePage(newPage: number) {

@@ -37,9 +37,6 @@ import { Usuario } from '../../interface/login';
 
   constructor(private router: Router, private loginService: LoginService, private authService: AuthService, private toastr: ToastrService) {}
 
-  
-
-
   autenticar() {
     this.errorMessage = null;
 

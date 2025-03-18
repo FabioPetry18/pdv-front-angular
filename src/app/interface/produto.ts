@@ -1,49 +1,27 @@
-export class ProdutoPK {
-    codproduto: number;
-    idloja: number;
-  
-    constructor() {
-      this.codproduto = 0;
-      this.idloja = 0;
-    }
-  }
-  
+import { Loja } from "./login";
+
   export class Adicional {
-    id: number;
-    titulo: string;
-    descricao: string;
-    valor: number;
-    tag: string;
-    status: string;
+    id?: number;
+    titulo?: string;
+    descricao?: string;
+    valor?: number;
+    tag?: string;
+    status: string = 'Ativo';
+    produtoid?: number;
   
-    constructor() {
-      this.id = 0;
-      this.titulo = '';
-      this.descricao = '';
-      this.valor = 0;
-      this.tag = '';
-      this.status = '';
-    }
+    constructor() {}
   }
   
   export class Produto {
-    id: ProdutoPK;
-    titulo: string;
-    descricao: string;
-    valor: number;
-    adicionais: Adicional[];
-    imagem: string;
-    status: string;
-  
-    constructor() {
-      this.id = new ProdutoPK();
-      this.titulo = '';
-      this.descricao = '';
-      this.valor = 0;
-      this.adicionais = [];
-      this.imagem = '';
-      this.status = '';
-    }
+    id?: number;
+    titulo?: string;
+    descricao?: string;
+    valor?: number;
+    adicionais: Adicional[] = [];
+    imagem?: string;
+    status: string = 'Ativo';
+    loja?: Loja;
+    constructor() { }
   }
   
   export class PageResponse<T> {

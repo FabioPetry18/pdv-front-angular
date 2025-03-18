@@ -5,12 +5,12 @@ import { first, Subscription } from 'rxjs';
 import { ItemComponent } from "../../../components/item.component";
 import { SseService } from '../../../service/SseService';
 import { AuthService } from '../../../service/auth.service';
-import { StoreService } from '../../../services/store.service';
+import { CurrentStoreUtils } from '../../../utils/current-store';
 
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [HttpClientModule, CommonModule, ItemComponent],
+  imports: [CommonModule, ItemComponent],
   templateUrl: './order.component.html',
   styleUrl: './order.component.css'
 })
@@ -23,7 +23,7 @@ export class OrderNewComponent implements OnInit, OnDestroy  {
     private http: HttpClient, 
     private sseService: SseService,  
     private authService: AuthService, 
-    private storeService: StoreService
+    private currentStoreUtils: CurrentStoreUtils
   ){}
 
   obj ={
@@ -49,7 +49,7 @@ export class OrderNewComponent implements OnInit, OnDestroy  {
  }
 
   ngOnInit(): void {
-    this.storeSubscription = this.storeService.storeChanged.subscribe(store => {
+    this.storeSubscription = this.currentStoreUtils.lojaSelecionada$.subscribe(store => {
       if (store) {
         const codLoja = store.id; // Assuming store has an id property
         const url = `http://localhost:8081/pedido/sse/${codLoja}`;

@@ -9,4 +9,9 @@ export class LojaService {
   add(data: any, idProprietario: number): Observable<any> {
     return this.httpService.post(`/loja/${idProprietario}`, data);
   }
+
+  
+  getallByProprietario(idProprietario: number): Observable<any> {
+    return this.httpService.get(`/loja/${idProprietario}`);
+  }
 }

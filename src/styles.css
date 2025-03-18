@@ -1,4 +1,18 @@
 @import "tailwindcss";
+@source "./app";
+@layer utilities{
+  body {
+    @apply bg-base-200;
+  }
+
+  .card {
+    @apply bg-base-100 border border-base-300;
+  }
+  .input-no-outline {
+    @apply outline-none;
+  }
+
+}
 @plugin "daisyui" {
   themes: all;
 }

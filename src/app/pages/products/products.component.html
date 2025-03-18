@@ -1,9 +1,128 @@
 <main class="flex flex-col min-h-screen box-border p-4 gap-3">
-  <div class="flex w-full items-center justify-center">
+  <div class="flex w-full items-center justify-center gap-2">
     <app-search placeholder="Digite um título..." (search)="onSearchResult($event)"></app-search>
+    <input type="button" value="Cadastrar produto +" (click)="onCreateItem()" class="btn btn-primary">
   </div>
-   <app-dynamic-table [content]="produtos" [action]="true" [columns]="columns" [image]="true"></app-dynamic-table>
+   <app-dynamic-table [content]="produtos" (removeItem)="onRemoveItem($event)" (updateItem)="onUpdateItem($event)" [action]="true" [columns]="columns" [image]="true"></app-dynamic-table>
    <div class="flex justify-center">
      <app-paginator [isLastPage]="isLastPage" (pageChange)="onPageChange($event)"></app-paginator>
    </div>
+<!-- Modal com Formulário -->
+<dialog #modalElement class="modal">
+  <div class="modal-box max-w-4xl max-h-[600px] h-auto bg-base-200 border border-base-300 shadow-lg">
+    
+    <!-- Abas -->
+    <div class="tabs tabs-lift bg-base-200">
+      <a 
+        class="tab text-base-content" 
+        [class.tab-active]="activeTab === 'produto'"
+        (click)="setActiveTab('produto')">
+        Produto
+      </a>
+      <a 
+        class="tab text-base-content" 
+        [class.tab-active]="activeTab === 'adicional'"
+        (click)="setActiveTab('adicional')">
+        Adicional
+      </a>
+    </div>
+
+    <!-- Conteúdo das Abas -->
+    <div *ngIf="activeTab === 'produto'" class="flex max-h-[25rem] gap-4 p-3 bg-base-200 border border-base-300 rounded-lg">
+      
+      <!-- Formulário -->
+      <div class="w-1/2">
+        <fieldset class="fieldset">
+          <input type="file" (change)="onFileSelected($event)" class="file-input file-input-bordered w-full bg-base-200 text-base-content border-base-300" />
+          <label class="fieldset-label text-base-content">Tamanho máximo 2MB</label>
+        </fieldset>
+
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend text-base-content">Título</legend>
+          <input #titulo="ngModel"
+          type="text" class="input input-bordered w-full bg-base-200 text-base-content border-base-300" [(ngModel)]="selectedItem.titulo" required />
+          <div *ngIf="titulo.invalid && titulo.touched"  class="validator-hint text-error">Campo obrigatório!</div>
+        </fieldset>
+
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend text-base-content">Descrição</legend>
+          <textarea  #descricao="ngModel"
+          class="textarea textarea-bordered h-24 w-full bg-base-200 text-base-content border-base-300" [(ngModel)]="selectedItem.descricao"></textarea>
+          <div *ngIf="descricao.invalid && descricao.touched" class="fieldset-label text-base-content">Opcional</div>
+        </fieldset>
+
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend text-base-content">Valor</legend>
+          <input   #valor="ngModel"
+          type="number" class="input input-bordered w-full bg-base-200 text-base-content border-base-300" [(ngModel)]="selectedItem.valor" required />
+          <div *ngIf="valor.invalid && valor.touched" class="validator-hint text-error">Campo obrigatório!</div>
+        </fieldset>
+      </div>
+
+      <!-- Divider -->
+      <div class="divider divider-horizontal border-base-300"></div>
+
+      <!-- Card de Informações -->
+      <div class="w-1/2 bg-base-200 p-4 rounded-lg shadow-lg border border-base-300">
+        <figure class="w-full">
+          <img  
+            [src]="imageEdit ? imageEdit : selectedItem.imagem" 
+            alt="Imagem do Produto" 
+            class="w-full h-50 object-cover rounded-lg"
+          >
+        </figure>        
+        <div class="mt-4">
+          <h3 class="text-lg font-bold text-base-content">{{ selectedItem.titulo }}</h3>
+          <p class="text-base-content">{{ selectedItem.descricao }}</p>
+          <p class="text-lg font-semibold text-base-content mt-2">R$ {{ selectedItem.valor }}</p>
+        </div>
+      </div>
+
+    </div>
+    <!-- Conteúdo da Aba "Adicional" -->
+    <div *ngIf="activeTab === 'adicional'" class="p-4 bg-base-200 h-[25rem] overflow-y-auto border border-base-300 rounded-lg">
+      <div class="flex w-full items-center justify-center mb-4">
+        <app-search placeholder="Digite uma tag ou nome" (search)="onSearchResultModal($event)"></app-search>
+      </div>
+
+      <div class="flex flex-row justify-between mb-3" *ngFor="let adicional of adicionais" >
+        <div class="flex flex-row gap-2">
+          <p  class="text-base-content"> {{ adicional.titulo }}</p>
+          <div class="badge badge-outline badge-primary">{{ adicional.tag}}</div>
+        </div>
+        <input type="checkbox" (change)="onCheckboxChange($event, adicional)" [checked]="adicional.produtoid != null" class="toggle toggle-error" />
+      </div>
+    </div>
+
+    <!-- Ações do Modal -->
+    <div   class="modal-action">
+      <button class="btn btn-primary" (click)="updateProduct()">Salvar</button>
+      <button class="btn btn-neutral" (click)="closeModal()">Cancelar</button>
+    </div>
+
+  </div>
+</dialog>
+<dialog #AdicionalElement class="modal">
+  <div class="modal-box max-w-4xl max-h-[600px] h-auto bg-base-200 border border-base-300 shadow-lg">
+    <div *ngIf="activeTab === 'adicional'" class="p-4 bg-base-200 h-[25rem] overflow-y-auto border border-base-300 rounded-lg">
+      <div class="flex w-full items-center justify-center mb-4">
+        <app-search placeholder="Digite uma tag ou nome" (search)="onSearchResultModal($event)"></app-search>
+      </div>
+
+      <div class="flex flex-row justify-between mb-3" *ngFor="let adicional of adicionais" >
+        <div class="flex flex-row gap-2">
+          <p  class="text-base-content"> {{ adicional.titulo }}</p>
+          <div class="badge badge-outline badge-primary">{{ adicional.tag}}</div>
+        </div>
+        <input type="checkbox" (change)="onCheckboxChange($event, adicional)" [checked]="adicional.produtoid != null" class="toggle toggle-error" />
+      </div>
+    </div>
+
+    <div   class="modal-action">
+      <button class="btn btn-primary" (click)="updateProduct()">Salvar</button>
+      <button class="btn btn-neutral" (click)="closeModal()">Cancelar</button>
+    </div>
+
+  </div>
+</dialog>
 </main>

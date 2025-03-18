@@ -13,7 +13,14 @@ export class ProductService {
       .set('size', 10);
       return this.httpService.get(`/produto/paginator/${lojaId}`, new HttpHeaders(), params);
   }
-  update( login: any,id: number) : Observable<any> {
-    return this.httpService.put(`/login/${id}`, login);
+
+  findById(produtoId:number): Observable<any> {
+      return this.httpService.get(`/produto/${produtoId}`, new HttpHeaders());
+  }
+  update( produto: any) : Observable<any> {
+    return this.httpService.put(`/produto`, produto);
+  }
+  save( produto: any) : Observable<any> {
+    return this.httpService.post(`/produto`, produto);
   }
 }
