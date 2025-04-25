@@ -8,7 +8,7 @@ import { CurrentStoreUtils } from '../utils/current-store';
   standalone: true,
   imports: [CommonModule],
   template: `
-<div>
+<div class="w-full">
   <button 
     class="flex items-center justify-evenly rounded-sm cursor-pointer hover:bg-base-200 w-full" 
     (click)="toggleDropdown()" 
@@ -22,14 +22,14 @@ import { CurrentStoreUtils } from '../utils/current-store';
       <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4"></path>
     </svg>
     <span class="text-base-content">
-   {{ isLoading ? 'Carregando...' : selectedStore?.nome }}
+   {{ isLoading ? 'Carregando...' : selectedStore.nome }}
     </span>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" stroke-width="1">
       <path d="M6 9l6 6l6 -6"></path>
     </svg>
   </button>
 
-  <div *ngIf="isDropdownOpen" class="absolute z-10 w-full mt-1 bg-base-200 border border-gray-300 rounded-sm shadow-lg">
+  <div *ngIf="isDropdownOpen" class="absolute w-full min-w-[200px] z-10 mt-1 bg-base-200 border  rounded-sm shadow-lg border-gray-300">
     <!-- Exibir "Carregando..." se ainda estiver carregando -->
     <ng-container *ngIf="isLoading">
       <div class="flex items-center p-2">
@@ -39,10 +39,20 @@ import { CurrentStoreUtils } from '../utils/current-store';
 
     <!-- Exibir lista de lojas quando carregado -->
     <ng-container *ngIf="!isLoading">
-      <div *ngFor="let store of stores" (click)="selectStore(store)" class="flex items-center p-2 cursor-pointer hover:bg-gray-100">
-        <span class="text-base-content">{{ store.nome }}</span>
+      <div *ngFor="let store of stores; let last = last" (click)="selectStore(store)">
+        <div class="flex items-center justify-between px-4 hover:bg-gray-100 p-4">
+          <div class="flex gap-2 items-center justify-center">
+            <span class="text-base-content">{{ store.nome }}</span>
+            <div class="status" [ngClass]="lojaFechada(store) ?  'status-error' : 'status-success'"></div>
+            </div>
+          <div class="badge badge-soft badge-primary cursor-pointer">Editar</div>
+        </div>
+        <!-- Só exibe o divider se NÃO for o último item -->
+        <div *ngIf="!last" class="divider m-0 p-0"></div>
       </div>
     </ng-container>
+
+
   </div>
 </div>
 
@@ -51,7 +61,7 @@ import { CurrentStoreUtils } from '../utils/current-store';
 export class StoreComboBoxComponent implements OnInit {
   stores: Loja[] = [];
   @Output() selectedStoreChange = new EventEmitter<Loja>();
-
+  isClosed = true;
   selectedStore: Loja = new Loja();
   isDropdownOpen = false;
   isLoading = true;
@@ -70,6 +80,10 @@ export class StoreComboBoxComponent implements OnInit {
         console.log("Fechando - isLoading:", this.isLoading);
       }
     });
+  }
+
+  lojaFechada(store: Loja) {
+    return this.currentStore.isLojaFechada(store);
   }
   
   selectStore(store: Loja) {

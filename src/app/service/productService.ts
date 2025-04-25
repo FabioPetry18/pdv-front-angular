@@ -20,7 +20,11 @@ export class ProductService {
   update( produto: any) : Observable<any> {
     return this.httpService.put(`/produto`, produto);
   }
-  save( produto: any) : Observable<any> {
-    return this.httpService.post(`/produto`, produto);
+  save(produto: any, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('produto', JSON.stringify(produto));
+    formData.append('productFile', file); // Arquivo
+  
+    return this.httpService.post(`/produto`, formData);
   }
 }

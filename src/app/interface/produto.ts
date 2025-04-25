@@ -17,6 +17,7 @@ import { Loja } from "./login";
     titulo?: string;
     descricao?: string;
     valor?: number;
+    tag?: string;
     adicionais: Adicional[] = [];
     imagem?: string;
     status: string = 'Ativo';

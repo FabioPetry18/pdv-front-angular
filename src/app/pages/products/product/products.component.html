@@ -1,0 +1,20 @@
+<main class="flex flex-col min-h-screen box-border p-10 gap-3">
+  <div class="flex justify-between">
+    <h1 class="font-semibold text-2xl">Produto</h1>
+    <div class="flex gap-2">
+      <input type="button" value="+ Criar produto" (click)="onCreateItem()" class="btn btn-sm btn-primary" />
+    </div>
+  </div>
+    <div class="card bg-base-100 p-5">
+      <div class="flex w-full items-center justify-center gap-2">
+        <app-search placeholder="Digite um título..." (search)="onSearchResult($event)"/>
+      </div>
+        <app-dynamic-table [content]="produtos" (removeItem)="onRemoveItem($event)" (updateItem)="onUpdateItem($event)" [action]="true" [columns]="columns" [image]="true"></app-dynamic-table>
+        <div class="flex justify-center">
+          <app-paginator  [isLastPage]="isLastPage" (pageChange)="onPageChange($event)"></app-paginator>
+        </div>
+    </div>
+    <app-new-product-modal (upsertProduct)="onUpsertProduct($event)"></app-new-product-modal>
+
+
+</main>

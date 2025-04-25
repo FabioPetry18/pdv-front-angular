@@ -15,7 +15,7 @@ import { CurrentStoreUtils } from '../utils/current-store';
   <!-- Botão para abrir o menu no mobile -->
   <button 
     (click)="toggleMenu()" 
-    class="fixed top-4 left-4 p-2 bg-transparent border-0 z-50 lg:hidden"
+    class="fixed top-4 left-4 p-2 bg-transparent border-0  lg:hidden"
   >
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6">
       <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
@@ -39,25 +39,40 @@ import { CurrentStoreUtils } from '../utils/current-store';
     <!-- Dropdown de lojas -->
     <div class="p-2">
       <app-store-combo-box 
-        class="w-full"
         (selectedStoreChange)="onStoreSelected($event)"
       ></app-store-combo-box>
     </div>
 
     <!-- Navegação (Menu) -->
     <nav class="flex flex-col space-y-2 mt-4  ">
-      <a class="flex items-center px-4 py-2 text-base-content rounded-lg hover:bg-gray-200" href="#">
-        <span class="text-base-content">Novos Pedidos</span>
-      </a>
-      <a class="flex items-center px-4 py-2 text-base-content rounded-lg hover:bg-gray-200" [routerLink]="'/products'">
-        <span class="text-base-content">Produtos</span>
-      </a>
+    <ul class="menu  rounded-box w-56">
+        <li>
+          <details open>
+            <summary>Pedido</summary>
+            <ul>
+              <li  [routerLink]="'/order/new'"><a>Novo</a></li>
+              <li  [routerLink]="'/products/additional'" ><a>Confirmado</a></li>
+            </ul>
+          </details>
+        </li>
+      </ul>
+      <ul class="menu  rounded-box w-56">
+        <li>
+          <details open>
+            <summary>Produtos</summary>
+            <ul>
+              <li  [routerLink]="'/products'"><a>Produtos</a></li>
+              <li  [routerLink]="'/products/additional'" ><a>Adicionais</a></li>
+            </ul>
+          </details>
+        </li>
+      </ul>
     </nav>
   </aside>
 
   <!-- Conteúdo Principal -->
   <main class="flex-1">
-    <router-outlet></router-outlet>
+     <router-outlet></router-outlet>
   </main>
 </div>
 
@@ -71,6 +86,8 @@ export class MainLayoutComponent implements OnInit {
   selectedStore: any = null;
   menuOpen: boolean = false; // Estado do menu
   isLargeScreen: boolean = window.innerWidth >= 768; // Verifica se a tela é grande
+  
+  listaAtiva: 'cadastro' | 'listagem' = 'listagem';
 
   constructor(private currentStoreUtils: CurrentStoreUtils, private authService : AuthService) {
     window.addEventListener('resize', this.handleResize.bind(this)); // Adiciona listener para redimensionamento
