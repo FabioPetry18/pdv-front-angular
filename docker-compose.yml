@@ -1,0 +1,13 @@
+services:
+  pdv-angular:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pdv-angular
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development

@@ -38,13 +38,21 @@ export class Assinatura {
   }
 }
 
+export enum UserTypes {
+  CLIENTE = 'CLIENTE',
+  DONO = 'DONO',
+  FUNCIONARIO = 'FUNCIONARIO',
+  FORNECEDOR = 'FORNECEDOR',
+  ADMIN = 'ADMIN'
+}
+
 export class Login {
   id: number;
   usuario: string;
   senha: string;
   primeiroacesso: string;
   acessos: string;
-  userType: string;
+  userType: UserTypes;
 
   constructor() {
       this.id = 0;
@@ -52,7 +60,7 @@ export class Login {
       this.senha = '';
       this.primeiroacesso = '';
       this.acessos = '';
-      this.userType = '';
+      this.userType = UserTypes.CLIENTE; // Valor padrão
   }
 }
 

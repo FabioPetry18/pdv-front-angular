@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { CadastroProprietarioComponent } from './pages/cadastro-proprietario/cadastro-proprietario.component';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { MainLayoutComponent } from './layout/layoutWithSideBar';
@@ -38,5 +39,9 @@ export const routes: Routes = [
     {
         path: 'first-acess-store',
         loadChildren: () => import('./pages/first-acess-new-store/first-acess-store.routes').then(r => r.routes)
+    },
+    {
+        path: 'cadastro-proprietario',
+        component: CadastroProprietarioComponent
     }
 ];

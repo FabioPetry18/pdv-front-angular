@@ -1,0 +1,87 @@
+<main class="flex flex-col min-h-screen box-border p-4 md:p-10 bg-base-200">
+  <div class="flex items-center justify-center mb-5">
+    <h1 class="text-base-content text-2xl">Cadastro de Proprietário</h1>
+  </div>
+
+  <div *ngIf="!cadastroRealizado" class="flex flex-col items-center justify-center gap-4 border border-base-300 bg-base-100 rounded p-6 max-w-3xl mx-auto">
+    <div class="w-full flex flex-col md:flex-row gap-4">
+      <fieldset class="fieldset w-full md:w-1/2">
+        <legend class="fieldset-legend">Nome</legend>
+        <input type="text" class="input w-full" [(ngModel)]="proprietario.nome" required />
+      </fieldset>
+      
+      <fieldset class="fieldset w-full md:w-1/2">
+        <legend class="fieldset-legend">Sobrenome</legend>
+        <input type="text" class="input w-full" [(ngModel)]="proprietario.sobrenome" required />
+      </fieldset>
+    </div>
+    
+    <fieldset class="fieldset w-full">
+      <legend class="fieldset-legend">Telefone</legend>
+      <input 
+      type="tel" 
+      class="input w-full" 
+      [(ngModel)]="telefoneInput" 
+      (ngModelChange)="formatarTelefone($event)"
+      (keypress)="$event.charCode >= 48 && $event.charCode <= 57 || $event.preventDefault()"
+      placeholder="(99) 99999-9999"
+      maxlength="15"
+      required />
+      <div *ngIf="telefoneInvalido" class="validator-hint text-error">
+        Telefone inválido!
+      </div>
+    </fieldset>
+    
+    <h3 class="text-lg font-semibold w-full mt-4">Dados de Acesso</h3>
+    
+    <fieldset class="fieldset w-full">
+      <legend class="fieldset-legend">Usuário</legend>
+      <input type="text" class="input w-full" [(ngModel)]="proprietario.login.usuario" required />
+    </fieldset>
+    
+    <fieldset class="fieldset w-full">
+      <legend class="fieldset-legend">Senha</legend>
+      <input type="password" class="input w-full" [(ngModel)]="proprietario.login.senha" required minlength="8" />
+      <p class="text-sm text-base-content mt-1">
+        Mínimo 8 caracteres
+      </p>
+    </fieldset>
+    
+    <fieldset class="fieldset w-full">
+      <legend class="fieldset-legend">Confirmar Senha</legend>
+      <input type="password" class="input w-full" [(ngModel)]="confirmacaoSenha" required />
+    </fieldset>
+    
+    <h3 class="text-lg font-semibold w-full mt-4">Plano de Assinatura</h3>
+    
+    <fieldset class="fieldset w-full">
+      <legend class="fieldset-legend">Quantidade de Lojas</legend>
+      <input type="number" class="input w-full" [(ngModel)]="proprietario.assinatura.qtdLojas" required min="1" />
+    </fieldset>
+    
+    <div class="w-full flex justify-between mt-6">
+      <button class="btn btn-neutral" (click)="voltarParaLogin()">Voltar</button>
+      <button class="btn btn-primary" (click)="cadastrar()">Cadastrar</button>
+    </div>
+  </div>
+  
+  <!-- Tela após cadastro -->
+  <div *ngIf="cadastroRealizado" class="flex flex-col items-center justify-center gap-4 border border-base-300 bg-base-100 rounded p-6 max-w-3xl mx-auto">
+    <div class="text-center">
+      <h2 class="text-xl font-semibold mb-4">Cadastro Realizado com Sucesso!</h2>
+      <p class="mb-6">Seu cadastro foi realizado, mas o acesso completo à plataforma só será liberado após a confirmação do pagamento.</p>
+      
+      <div class="alert alert-info mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span>Aguardando confirmação de pagamento...</span>
+      </div>
+      
+      <div class="flex justify-center gap-4">
+        <button class="btn btn-neutral" (click)="voltarParaLogin()">Voltar para Login</button>
+        <button class="btn btn-primary" (click)="verificarStatus()">Verificar Status</button>
+      </div>
+    </div>
+  </div>
+</main>

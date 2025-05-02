@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { first } from 'rxjs';
 import { LoginService } from '../../service/loginService';
 import { AuthService } from '../../service/auth.service';
@@ -12,7 +12,7 @@ import { Usuario } from '../../interface/login';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterLink],
   template: `
   <div class=" min-h-screen min-w-screen flex items-center justify-center flex-col gap-2">
     <fieldset class="fieldset">
@@ -25,10 +25,14 @@ import { Usuario } from '../../interface/login';
       <input type="text" class="input validator" [(ngModel)]="form.senha" required />
       <div class="validator-hint">Campo obrigatório!</div>
     </fieldset>
-    <button  (click)="autenticar()" class="btn btn-primary">Entrar</button>
+    <button (click)="autenticar()" class="btn btn-primary">Entrar</button>
+    <div class="mt-4 text-center">
+      <p>Não tem uma conta? <a [routerLink]="['/cadastro-proprietario']" class="text-primary hover:underline">Cadastre-se</a></p>
+    </div>
   </div>
   `,
-})export class LoginComponent {
+})
+export class LoginComponent {
   form = {
     usuario: "fabio.petry",
     senha: "123456"
