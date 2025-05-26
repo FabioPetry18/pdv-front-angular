@@ -52,7 +52,7 @@ import { Usuario } from '../../interface/login';
       },
       error: (error) => {
         console.error('Erro ao autenticar:', error);
-        this.toastr.error('Algo deu errado!', 'Erro');
+        this.toastr.error(error.error.message, 'Erro');
       }
     });
   }
